@@ -1,5 +1,9 @@
-/**
- * 小程序 Request 封装
+/*
+ * 功能：小程序仿axios的Request封装
+ *
+ * 创建日期：2019-12-23
+ * 更新日期：2019-12-23
+ * 作者：GaoShiWei
  */
 export default class Request {
   // 配置项
