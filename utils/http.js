@@ -15,13 +15,13 @@ service.interceptors.request.use(config => {
 })
 
 service.interceptors.response.use(response => {
-  console.log('response-success：', response);
+  // console.log('response-success：', response);
   return response;
 }, error => {
-  console.log('response-error：', error);
+  // console.log('response-error：', error);
   return Promise.reject(error);
 }, config => {
-  console.log('response-config：', config);
+  // console.log('response-config：', config);
   return config;
 })
 

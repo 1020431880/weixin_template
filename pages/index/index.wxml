@@ -1,5 +1,5 @@
 <!-- index.wxml -->
 <view class="container">
   <van-icon name="chat" size="50px" />
-  <van-button type="primary">按钮</van-button>
+  <van-button type="primary" bind:tap="queryList">按钮</van-button>
 </view>

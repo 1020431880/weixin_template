@@ -3,6 +3,9 @@ const app = getApp()
 // 引入http
 import http from '../../utils/http.js'
 import util from '../../utils/util.js'
+import {
+  hexMD5
+} from '../../libs/md5.js'
 
 Page({
   data: {},
@@ -12,7 +15,6 @@ Page({
    */
   onLoad(options) {
     this.queryList();
-    console.log(util.prefixZero(22,3));
   },
   onShow() {},
 

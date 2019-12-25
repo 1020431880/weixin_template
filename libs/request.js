@@ -24,7 +24,7 @@ export default class Request {
     request: {
       use: (configCb) => {
         this.configure = Object.assign(this.configure, configCb && configCb(this.configure));
-        if (configCb) this.interceptors.response.success = configCb;
+        if (configCb) this.interceptors.request.success = configCb;
       },
       success: (configCb => configCb)
     },
@@ -87,6 +87,8 @@ export default class Request {
     method = method || this.configure.method;
     url = this.configure.baseURL + url;
     header = Object.assign(this.configure.header, header);
+    // 请求拦截
+    this.interceptors.request.success.call(this, this.configure);
 
     // request请求
     return new Promise((resolve, reject) => {
