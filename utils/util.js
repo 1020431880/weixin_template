@@ -108,7 +108,7 @@ export default {
 
   /**
    * 去除字符串两边空格
-   * @param {*} value 参数
+   * @param {String} value 参数
    * @returns 返回处理后的字符串
    */
   trim(value) {
@@ -117,7 +117,7 @@ export default {
   },
   /**
    * 去除字符串左边空格
-   * @param {*} value 参数
+   * @param {String} value 参数
    * @returns 返回处理后的字符串
    */
   trimLeft(value) {
@@ -126,7 +126,7 @@ export default {
   },
   /**
    * 去除字符串右边空格
-   * @param {*} value 参数
+   * @param {String} value 参数
    * @returns 返回处理后的字符串
    */
   trimRight(value) {
@@ -135,7 +135,7 @@ export default {
   },
   /**
    * 去除字符串全部空格
-   * @param {*} value 参数
+   * @param {String} value 参数
    * @returns 返回处理后的字符串
    */
   trimAll(value) {
@@ -144,7 +144,7 @@ export default {
   },
   /**
    * 数字前补齐零
-   * @param value 参数
+   * @param {String|Number} value 参数
    * @returns 返回处理后的字符串
    */
   digit(value) {
@@ -181,7 +181,7 @@ export default {
 
   /**
    * map转object
-   * @param map 参数
+   * @param {Map} map 参数
    * @returns 返回Object
    */
   mapToObject(map) {
@@ -193,7 +193,7 @@ export default {
   },
   /**
    * object转map
-   * @param map 参数
+   * @param {Object} obj 参数
    * @returns 返回Map
    */
   objectToMap(obj) {
@@ -205,7 +205,7 @@ export default {
   },
   /**
    * map转json
-   * @param map 参数
+   * @param {Map} map 参数
    * @returns 返回Json
    */
   mapToJson(map) {
@@ -213,7 +213,7 @@ export default {
   },
   /**
    * json转map
-   * @param map 参数
+   * @param {String} json 参数
    * @returns 返回Map
    */
   jsonToMap(json) {
@@ -222,7 +222,7 @@ export default {
 
   /**
    * 判断是否是闰年
-   * @param {*} year 年份
+   * @param {Number} year 年份
    * @returns 返回true和false
    */
   isLeapYear(year) {
@@ -360,17 +360,13 @@ export default {
    * 计算两个日期之间相差的天数，支持多种日期格式
    * @param {String} startDate 计算的开始日期
    * @param {String} endDate 计算的结束日期
-   * @returns 返回两个日期相差的天数
+   * @returns 返回两个日期相差的天数，返回负数代表超过多少天，返回正数代表还有多少天
    */
   getDiffDateNum(startStr, endStr) {
     if (startStr == null || startStr == null) return 0;
     let startDate = this.formatDate(startStr);
     let endDate = this.formatDate(endStr);
-    if ((endDate.getTime() - startDate.getTime()) >= 0) {
-      return (endDate.getTime() - startDate.getTime()) / (24 * 60 * 60 * 1000);
-    } else {
-      return -1;
-    }
+    return (endDate.getTime() - startDate.getTime()) / (24 * 60 * 60 * 1000);
   },
   /**
    * 获得两个日期之间所有日期
@@ -444,7 +440,7 @@ export default {
 
   /**
    * 数组中是否包含指定的字符串
-   * @param {*} value 指定字符串
+   * @param {String|Number} value 指定字符串
    * @param {Array} array 查找的数组
    * @returns 返回true和false
    */
