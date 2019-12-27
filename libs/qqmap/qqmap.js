@@ -1,14 +1,17 @@
-const QQMapSdk = require('qqmap-wx-jssdk.min.js')
-const mapSdk = new QQMapSdk({
-    key: 'SA5BZ-LCDK3-OGY3F-YRBM2-UBQRZ-JRFX2' // 必填，这里最好填自己申请的的
-})
-
-/**
- * 通过小程序获得位置信息
+/*
+ * 功能：小程序定位处理工具类
+ *
+ * 创建日期：2019-12-27
+ * 更新日期：2019-12-27
+ * 作者：GaoShiWei
  */
+const QQMapSdk = require('./qqmap-wx-jssdk.min.js')
+const mapSdk = new QQMapSdk({
+    key: 'SA5BZ-LCDK3-OGY3F-YRBM2-UBQRZ-JRFX2' // 必填，目前是个人申请的，这里最好填自己申请的
+})
 export default {
     /**
-     * 小程序获得当前定位经纬度
+     * 获得当前定位信息
      */
     getLocation() {
         return new Promise(function (resolve, reject) {
@@ -22,13 +25,13 @@ export default {
                     reject(res);
                 }
             })
-        });
+        })
     },
     /**
-     * 地址 转 经纬度坐标
-     * @param {地址} address 
+     * 地址转地图经纬度坐标
+     * @param {String} address 地址
      */
-    transAddressToLocation(address) {
+    addressToLocation(address) {
         return new Promise(function (resolve, reject) {
             mapSdk.geocoder({
                 address: address,
@@ -42,12 +45,12 @@ export default {
         });
     },
     /**
-     * 经纬度 转 详细地址
+     * 经纬度坐标转地址
      * 
-     * @param {经度} latitude 
-     * @param {维度} longitude 
+     * @param {Float} latitude 维度
+     * @param {Float} longitude 经度
      */
-    transLocationToAddress(latitude, longitude) {
+    locationToAddress(latitude, longitude) {
         return new Promise(function (resolve, reject) {
             mapSdk.reverseGeocoder({
                 location: {
@@ -64,10 +67,11 @@ export default {
         });
     },
     /**
-     * 计算当前位置 距离 结束点经纬度数组的距离
-     * @param {需要对比经纬度的数据} to 
+     * 计算开始位置距离结束位置的距离，单位米
+     * @param {Location} from 开始距离的经纬度，传入 string格式的 from:"39.984060,116.307520" 或者Object格式的 from:{latitude:39.984060, longitude:116.307520} ，默认不传是获取当前的位置
+     * @param {*} to 结束距离的经纬度，传入String数组 to:"39.984060,116.307520;39.984060,116.507520" 或者传入数组对象 to:[{latitude:latitude:39.984060, longitude:116.307520}]
      */
-    calculateDistance(from, to) {
+    getLocationDistance(from, to) {
         return new Promise(function (resolve, reject) {
             mapSdk.calculateDistance({
                 from: from,

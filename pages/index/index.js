@@ -22,10 +22,27 @@ Page({
    * 查询
    */
   queryList() {
-    http.get('/user/getUser').then(res => {
-      console.log('返回成功：', res);
+    http.get('/user/getUser', {
+      id: 1,
+      name: '小明'
+    }).then(res => {
+      // console.log('返回成功：', res);
     }).catch(error => {
-      console.log('返回失败：', error);
+      // console.log('返回失败：', error);
+    })
+  },
+
+  /**
+   * 查询1
+   */
+  queryList1() {
+    http.get('/user/getUser', {
+      id: 2,
+      name: '小王'
+    }).then(res => {
+      // console.log('返回成功：', res);
+    }).catch(error => {
+      // console.log('返回失败：', error);
     })
   }
 })

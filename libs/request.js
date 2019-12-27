@@ -2,7 +2,7 @@
  * 功能：小程序仿axios的Request封装
  *
  * 创建日期：2019-12-23
- * 更新日期：2019-12-23
+ * 更新日期：2019-12-27
  * 作者：GaoShiWei
  */
 export default class Request {
@@ -23,20 +23,19 @@ export default class Request {
   interceptors = {
     request: {
       use: (configCb) => {
-        this.configure = Object.assign(this.configure, configCb && configCb(this.configure));
-        if (configCb) this.interceptors.request.success = configCb;
+        if (configCb) this.interceptors.request.before = configCb;
       },
-      success: (configCb => configCb)
+      before: (configCb => {
+        return configCb
+      })
     },
     response: {
-      use: (successCb, errorCb, configCb) => {
+      use: (successCb, errorCb) => {
         if (successCb) this.interceptors.response.success = successCb;
         if (errorCb) this.interceptors.response.error = errorCb;
-        if (configCb) this.interceptors.response.config = configCb;
       },
       success: (successCb => successCb),
-      error: (errorCb => errorCb),
-      config: (configCb => configCb)
+      error: (errorCb => errorCb)
     }
   }
 
@@ -79,17 +78,26 @@ export default class Request {
   connect(url, data = {}, header = {}) {
     return this.request('CONNECT', url, data, header);
   }
-
+  // 判断是否传的url中带有http前缀，有则不会拼加baseUrl
+  isProtocol(url) {
+    return /(http|https):\/\/([\w.]+\/?)\S*/.test(url);
+  }
   // request封装
   request(method = '', url = '', data = {}, header = {}) {
     // 参数配置
-    data = Object.assign(this.configure.data, data);
-    method = method || this.configure.method;
-    url = this.configure.baseURL + url;
-    header = Object.assign(this.configure.header, header);
+    url = this.isProtocol(url) ? url : this.configure.baseURL + url;
+    header = {
+      ...this.configure.header,
+      ...header
+    }
+    // 设置传递的最新数据
+    this.configure.data = data;
+    this.configure.header = header;
+    this.configure.method = method;
     // 请求拦截
-    this.interceptors.request.success.call(this, this.configure);
-
+    this.interceptors.request.before({
+      ...this.configure
+    });
     // request请求
     return new Promise((resolve, reject) => {
       wx.request({
@@ -102,20 +110,17 @@ export default class Request {
         success: res => {
           // 成功拦截器回调
           if (res && res.statusCode == 200) {
-            this.interceptors.response.success.call(this, res);
-            this.interceptors.response.config.call(this, this.configure)
+            this.interceptors.response.success(res);
             resolve(res);
           } else {
             // 错误拦截器回调
-            this.interceptors.response.error.call(this, res);
-            this.interceptors.response.config.call(this, this.configure)
+            this.interceptors.response.error(res);
             reject(res)
           }
         },
         fail: err => {
           // 错误拦截器回调
-          this.interceptors.response.error.call(this, err);
-          this.interceptors.response.config.call(this, this.configure)
+          this.interceptors.response.error(err);
           reject(err)
         }
       })

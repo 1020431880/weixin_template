@@ -384,5 +384,5 @@ function calcMD5(str) {
 }
 
 module.exports = {
-  hexMD5: hexMD5
+  md5: hexMD5
 }
